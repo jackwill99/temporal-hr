@@ -1,0 +1,10 @@
+.venv
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+*.pyc
+backend/uploads/*
+backend/data/accepted_applications.json
+node_modules/
+npm-debug.log
+dist/

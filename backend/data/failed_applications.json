@@ -1,0 +1,77 @@
+[
+  {
+    "id": "155a9dc165d449f5b2af8fc7ede8d6e3",
+    "email": "cornerlay45@gmail.com",
+    "title": "senior full stack dev",
+    "description": "i am senior",
+    "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/5b94c4e6ac5348ad861168b3cfec1ccb_full-stack-developer.pdf",
+    "evaluated_at": "2026-01-05T06:15:36.946567Z",
+    "analysis": {
+      "qualifies": false,
+      "reason": "Applicant explicitly states 'i am senior', but the application materials do not explicitly mention React or Node.js.",
+      "missing_keywords": [
+        "react",
+        "node"
+      ],
+      "used_gemini": true,
+      "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/5b94c4e6ac5348ad861168b3cfec1ccb_full-stack-developer.pdf"
+    },
+    "notified_at": "2026-01-05T06:25:03.001667Z"
+  },
+  {
+    "id": "18523fd2df884e9a93862b1644d5c262",
+    "email": "cornerlay45@gmail.com",
+    "title": "senior full stack developer",
+    "description": "i have over 5 years experiences",
+    "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/c44d9c54a7ae4e64a4c3b2042ff45abf_full-stack-developer.pdf",
+    "evaluated_at": "2026-01-05T06:27:16.332962Z",
+    "analysis": {
+      "qualifies": false,
+      "reason": "The candidate's 5+ years of experience meets the senior-level requirement. However, the application materials do not explicitly mention experience with React or Node.js.",
+      "missing_keywords": [
+        "react",
+        "node"
+      ],
+      "used_gemini": true,
+      "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/c44d9c54a7ae4e64a4c3b2042ff45abf_full-stack-developer.pdf"
+    },
+    "notified_at": "2026-01-05T06:28:03.202886Z"
+  },
+  {
+    "id": "f3df267f47ca41f18cfd401b87cefca4",
+    "email": "cornerlay45@gmail.com",
+    "title": "senior full stack dev",
+    "description": "i am senior",
+    "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/c0999538f2ed41fc9a23e27f0ee5f64d_full-stack-developer.pdf",
+    "evaluated_at": "2026-01-05T07:42:44.266407Z",
+    "analysis": {
+      "qualifies": false,
+      "reason": "The applicant claims to be senior and a full-stack developer, but explicitly required technologies (React, Node.js) are not mentioned in the application materials.",
+      "missing_keywords": [
+        "react",
+        "node"
+      ],
+      "used_gemini": true,
+      "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/c0999538f2ed41fc9a23e27f0ee5f64d_full-stack-developer.pdf"
+    },
+    "notified_at": "2026-01-05T07:43:03.002458Z"
+  },
+  {
+    "id": "21f2d89710584366890ec4d59c528b88",
+    "email": "cornerlay45@gmail.com",
+    "title": "senior full stack dev",
+    "description": "i am senior",
+    "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/d6258ed8d39b4700a740a34a337c8215_full-stack-developer-resume-example.pdf",
+    "evaluated_at": "2026-01-07T04:13:20.173486Z",
+    "analysis": {
+      "qualifies": false,
+      "reason": "Missing senior signal or required keywords.",
+      "missing_keywords": [
+        "typescript"
+      ],
+      "used_gemini": false,
+      "file_path": "/Users/tensor_lab/projects/temporal-workflow/hr/backend/uploads/d6258ed8d39b4700a740a34a337c8215_full-stack-developer-resume-example.pdf"
+    },
+    "notified_at": null
+  }
+]

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Screener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f172a;
+        --surface: #0b1021;
+        --card: #141b35;
+        --accent: #5cf0c1;
+        --muted: #94a3b8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+        background: radial-gradient(circle at 20% 20%, #243764, #0b1021 55%);
+        color: #e2e8f0;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .shell {
+        width: min(960px, 100%);
+        background: linear-gradient(145deg, var(--card), #0f1a31);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 20px 60px rgba(4, 6, 20, 0.55);
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+        letter-spacing: -0.02em;
+      }
+      .lede {
+        margin: 0 0 1.5rem;
+        color: var(--muted);
+      }
+      form {
+        display: grid;
+        gap: 1rem;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        color: #e2e8f0;
+        font-size: 1rem;
+      }
+      input:focus,
+      textarea:focus {
+        outline: 2px solid var(--accent);
+        border-color: transparent;
+      }
+      textarea {
+        min-height: 160px;
+        resize: vertical;
+      }
+      .row {
+        display: grid;
+        gap: 1rem;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      button {
+        background: var(--accent);
+        color: #0b1021;
+        border: none;
+        padding: 0.85rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        box-shadow: 0 12px 30px rgba(92, 240, 193, 0.35);
+      }
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 40px rgba(92, 240, 193, 0.45);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .status {
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+      }
+      .status.ok {
+        background: rgba(92, 240, 193, 0.14);
+        color: #7cf5d4;
+      }
+      .status.error {
+        background: rgba(248, 113, 113, 0.14);
+        color: #fca5a5;
+      }
+      .status.progress {
+        background: rgba(148, 163, 184, 0.16);
+        color: #cbd5e1;
+      }
+      @media (min-width: 760px) {
+        .row.two {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <h1>Full‑Stack Developer Application Form</h1>
+      <p class="lede">React & Node.js.</p>
+      <div id="root"></div>
+    </div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script>
+      const { useState } = React;
+      const API_URL =
+        window.API_URL || "http://localhost:8000/api/applications";
+
+      function App() {
+        const [form, setForm] = useState({
+          email: "",
+          title: "",
+          description: "",
+        });
+        const [file, setFile] = useState(null);
+        const [status, setStatus] = useState({ state: "idle", message: "" });
+
+        const updateField = (key) => (event) =>
+          setForm((prev) => ({ ...prev, [key]: event.target.value }));
+
+        const handleFile = (event) => {
+          const selected = event.target.files?.[0];
+          if (selected && selected.type !== "application/pdf") {
+            setStatus({ state: "error", message: "Please upload a PDF file." });
+            setFile(null);
+            return;
+          }
+          setFile(selected || null);
+          setStatus({ state: "idle", message: "" });
+        };
+
+        const handleSubmit = async (event) => {
+          event.preventDefault();
+          if (!file) {
+            setStatus({
+              state: "error",
+              message: "Attach a PDF resume before submitting.",
+            });
+            return;
+          }
+
+          const data = new FormData();
+          data.append("email", form.email);
+          data.append("title", form.title);
+          data.append("description", form.description);
+          data.append("file", file);
+
+          setStatus({
+            state: "progress",
+            message: "Submitting to FastAPI and Temporal...",
+          });
+
+          try {
+            const response = await fetch(API_URL, {
+              method: "POST",
+              body: data,
+            });
+            const payload = await response.json();
+            if (!response.ok) {
+              throw new Error(payload.detail || "Request failed");
+            }
+            setStatus({
+              state: "ok",
+              message: `Request accepted. Stored file at ${payload.file_path}`,
+            });
+            setForm({ email: "", title: "", description: "" });
+            setFile(null);
+            event.target.reset();
+          } catch (error) {
+            setStatus({
+              state: "error",
+              message: error.message || "Something went wrong.",
+            });
+          }
+        };
+
+        return React.createElement(
+          "form",
+          { onSubmit: handleSubmit, noValidate: true },
+          React.createElement(
+            "div",
+            { className: "row two" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("label", null, "Email"),
+              React.createElement("input", {
+                required: true,
+                type: "email",
+                placeholder: "alex@company.com",
+                value: form.email,
+                onChange: updateField("email"),
+              }),
+            ),
+            React.createElement(
+              "div",
+              null,
+              React.createElement("label", null, "Title"),
+              React.createElement("input", {
+                required: true,
+                type: "text",
+                placeholder: "Senior Full-Stack Developer",
+                value: form.title,
+                onChange: updateField("title"),
+              }),
+            ),
+          ),
+          React.createElement(
+            "div",
+            null,
+            React.createElement("label", null, "Description"),
+            React.createElement("textarea", {
+              required: true,
+              placeholder: "Summarize your experience and stack...",
+              value: form.description,
+              onChange: updateField("description"),
+            }),
+          ),
+          React.createElement(
+            "div",
+            null,
+            React.createElement("label", null, "Upload PDF"),
+            React.createElement("input", {
+              type: "file",
+              accept: "application/pdf",
+              onChange: handleFile,
+              required: true,
+            }),
+            React.createElement(
+              "p",
+              { className: "hint" },
+              "Only accepts PDFs",
+            ),
+          ),
+          React.createElement(
+            "div",
+            { className: "actions" },
+            React.createElement(
+              "button",
+              { type: "submit", disabled: status.state === "progress" },
+              status.state === "progress" ? "Submitting..." : "Send",
+            ),
+            status.message &&
+              React.createElement(
+                "div",
+                { className: `status ${status.state}` },
+                status.message,
+              ),
+          ),
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        React.createElement(App, null),
+      );
+    </script>
+  </body>
+</html>
